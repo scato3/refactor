@@ -1,0 +1,4 @@
+export { default as KakaoLoginLargeImage } from "./kakao_login_large_widw.svg";
+export { default as IconLogo } from "./Icon_Logo.svg";
+export { default as IconNotification } from "./Icon_Notification.svg";
+export { default as IconBolt } from "./Icon_Bolt.svg";
