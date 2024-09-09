@@ -41,30 +41,30 @@ const _fetch = async ({
 
   let res = await fetch(apiUrl, requestOptions);
 
-  // if (isTokenExpired(token as string)) {
-  //   try {
-  //     // 401 에러가 발생한 경우, 리프레시 토큰을 사용하여 새 액세스 토큰 발급
-  //     const refreshResult = await postRefreshToken();
+  if (token && isTokenExpired(token as string)) {
+    try {
+      // 401 에러가 발생한 경우, 리프레시 토큰을 사용하여 새 액세스 토큰 발급
+      const refreshResult = await postRefreshToken();
 
-  //     // 새로운 액세스 토큰과 리프레시 토큰을 쿠키에 저장
-  //     setAppCookie(accessTokenKey, refreshResult.access_token);
-  //     setAppCookie(refreshTokenKey, refreshResult.refresh_token);
+      // 새로운 액세스 토큰과 리프레시 토큰을 쿠키에 저장
+      setAppCookie(accessTokenKey, refreshResult.accessToken);
+      setAppCookie(refreshTokenKey, refreshResult.refreshToken);
 
-  //     headers = {
-  //       ...headers,
-  //       Authorization: `Bearer ${refreshResult.access_token}`,
-  //     };
+      headers = {
+        ...headers,
+        Authorization: `Bearer ${refreshResult.accessToken}`,
+      };
 
-  //     // 요청을 다시 시도
-  //     requestOptions = {
-  //       ...requestOptions,
-  //       headers,
-  //     };
-  //     res = await fetch(apiUrl, requestOptions);
-  //   } catch (error) {
-  //     throw new Error('Token refresh failed');
-  //   }
-  // }
+      // 요청을 다시 시도
+      requestOptions = {
+        ...requestOptions,
+        headers,
+      };
+      res = await fetch(apiUrl, requestOptions);
+    } catch (error) {
+      throw new Error('Token refresh failed');
+    }
+  }
 
   if (!res.ok) {
     const errorData = await res.json();

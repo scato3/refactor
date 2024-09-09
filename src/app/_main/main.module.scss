@@ -18,11 +18,16 @@
 
 .ItemSection {
   padding: 10px 25px 0 25px;
+  overflow-y: auto;
   width: 100%;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
   background-color: var(--gray);
+}
+
+.CardSection {
+  overflow-y: scroll;
 }
 
 .ItemHeader {

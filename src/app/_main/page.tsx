@@ -20,6 +20,8 @@ export default function Main() {
   const data = { orderType: 'recent' };
   const { data: cardData } = useGetCard('recent', data);
 
+  console.log(cardData);
+
   return (
     <div className={styles.Container}>
       <div className={styles.MainSection}>
@@ -44,15 +46,17 @@ export default function Main() {
             <Image src={BtnArrowSm} width={19} height={19} alt="더보기" />
           </div>
         </div>
-        {cardData && cardData.length > 0 ? (
-          cardData
-            .slice(0, 3)
-            .map((data: CardType) => <Card data={data} key={data.id} />)
-        ) : (
-          <div className={styles.NoStudyContainer}>
-            <NoStudy />
-          </div>
-        )}
+        <div className={styles.CardSection}>
+          {cardData && cardData.data.length > 0 ? (
+            cardData.data
+              .slice(0, 3)
+              .map((data: CardType) => <Card data={data} key={data.id} />)
+          ) : (
+            <div className={styles.NoStudyContainer}>
+              <NoStudy />
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

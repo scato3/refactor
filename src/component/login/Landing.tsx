@@ -6,8 +6,8 @@ import styles from './landing.module.scss';
 import { getAppCookie } from '@/utils/cookie';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
-import { IconLogo, KakaoLoginLargeImage } from '../../../../public/icons';
-import useExploreStore from '@/app/store/explore';
+import useExploreStore from '@/store/explore';
+import { IconLogo, KakaoLoginLargeImage } from '../../../public/icons';
 
 export default function Landing() {
   const REST_API_KEY = process.env.NEXT_PUBLIC_API_KEY;
