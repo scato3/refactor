@@ -1,0 +1,62 @@
+.Container {
+  height: 100dvh;
+  background-color: var(--white);
+  width: 390px;
+}
+
+.navigation {
+  width: 100%;
+  height: 70px;
+  background-color: var(--black);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--white);
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 32px;
+}
+
+.section {
+  padding: 16px 25px 0 25px;
+  position: relative;
+  display: inline-block;
+}
+
+.filterContainer {
+  position: relative;
+  display: flex;
+  justify-content: flex-start;
+  font-weight: 400;
+  color: var(--black);
+  font-size: 15px;
+  line-height: 25px;
+  padding-left: 7px;
+  gap: 24.5px;
+  cursor: pointer;
+
+  .filter-option {
+    position: relative;
+    padding: 10px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+
+  .active {
+    font-weight: 700;
+    color: var(--main);
+  }
+
+  .underline {
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    height: 3px;
+    background-color: var(--main);
+    width: 100%;
+    transform: translateX(0);
+    transition:
+      transform 0.3s ease,
+      width 0.3s ease;
+  }
+}

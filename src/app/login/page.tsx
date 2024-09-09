@@ -1,10 +1,10 @@
 'use client';
 
-import { useGetKakaoCode } from '../apis/login/oauth';
+import { useGetKakaoCode } from '@/apis/login/oauth';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
-import useAuthStore from '../store/userauth';
-import { setAppCookie } from '../utils/cookie';
+import useAuthStore from '@/store/userauth';
+import { setAppCookie } from '@/utils/cookie';
 
 export default function Kakao() {
   const searchParams = useSearchParams();

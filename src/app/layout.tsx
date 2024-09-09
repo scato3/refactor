@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 
-import './styles/global.css';
+import '../styles/global.css';
 import QueryProvider from '@/context/queryProvider';
 
 import localFont from 'next/font/local';
@@ -44,6 +44,7 @@ export default function RootLayout({
         <QueryProvider>
           <div className="root_container">{children}</div>
         </QueryProvider>
+        <div id="portal"></div>
       </body>
     </html>
   );
