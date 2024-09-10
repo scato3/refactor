@@ -1,4 +1,4 @@
-export const filterConfig = [
+export const filterData = [
   {
     value: 0,
     name: '전체',

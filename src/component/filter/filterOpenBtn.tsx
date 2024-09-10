@@ -5,7 +5,7 @@ import styles from './filterOpenBtn.module.scss';
 import { ArrowDown } from '../../../public/arrow';
 import { IconBolt } from '../../../public/icons';
 import { classnames as cX } from '@/utils/classnames';
-import { filterStatus } from '@/config/filterStatus';
+import { filterStatus } from '@/data/filterStatus';
 import { useModal } from '@/hooks/useModal';
 import ModalContainer from '../common/modalContainer';
 import ModalPortal from '../common/modalPortal';
@@ -16,10 +16,7 @@ interface FilterProps {
   arrow?: boolean;
 }
 
-export default function FilterOpenBtn({
-  property = 'default',
-  arrow = false,
-}: FilterProps) {
+export default function FilterOpenBtn({ property = 'default' }: FilterProps) {
   const { openModal, handleCloseModal, handleOpenModal } = useModal();
 
   const [sliderRef] = useKeenSlider({
@@ -56,7 +53,7 @@ export default function FilterOpenBtn({
                   <p className={styles.content}>
                     {filterStatus[typedKey].label}
                   </p>
-                  {arrow && typedKey !== 'quickMatch' && (
+                  {typedKey !== 'quickMatch' && (
                     <Image
                       className={styles.arrow}
                       src={ArrowDown}
@@ -73,7 +70,7 @@ export default function FilterOpenBtn({
       </div>
       {openModal && (
         <ModalPortal>
-          <ModalContainer handleCloseModal={handleCloseModal}>
+          <ModalContainer>
             <FilterModal handleCloseModal={handleCloseModal} />
           </ModalContainer>
         </ModalPortal>

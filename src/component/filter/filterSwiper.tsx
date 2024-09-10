@@ -2,7 +2,7 @@ import { useKeenSlider } from 'keen-slider/react';
 import 'keen-slider/keen-slider.min.css';
 import Link from 'next/link';
 import styles from './filterSwiper.module.scss';
-import { filterConfig } from '@/config/filterConfig';
+import { filterData } from '@/data/filterData';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
 
@@ -18,7 +18,6 @@ export default function FilterSwiper({
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  // Keen-slider hook을 사용하여 슬라이더 초기화
   const [sliderRef] = useKeenSlider({
     breakpoints: {
       '(min-width: 300px)': {
@@ -41,7 +40,7 @@ export default function FilterSwiper({
   return (
     <div className={styles.categoryTabBox}>
       <div ref={sliderRef} className="keen-slider">
-        {filterConfig.map((category, index) => (
+        {filterData.map((category, index) => (
           <div
             key={category.value}
             onClick={() => setActiveTab(category.name)}

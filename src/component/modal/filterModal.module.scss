@@ -2,6 +2,7 @@
   height: 100dvh;
   background-color: var(--white);
   width: 390px;
+  overflow-y: scroll;
 }
 
 .navigation {
@@ -20,7 +21,14 @@
 .section {
   padding: 16px 25px 0 25px;
   position: relative;
-  display: inline-block;
+
+  h2 {
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 25px;
+    color: var(--black);
+    padding: 15px 0 8px 7px;
+  }
 }
 
 .filterContainer {
@@ -59,4 +67,168 @@
       transform 0.3s ease,
       width 0.3s ease;
   }
+}
+
+.optionContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  color: var(--gray-700);
+  cursor: pointer;
+
+  .optionItem {
+    padding: 3px 5px;
+    border: 1px solid var(--gray-200);
+    border-radius: 5px;
+    width: 77px;
+    text-align: center;
+  }
+
+  .selected {
+    border-color: var(--main);
+    background-color: var(--orange-100);
+    color: var(--main);
+  }
+}
+
+.optionHeader {
+  display: flex;
+  gap: 9px;
+
+  span {
+    font-weight: 500;
+    font-size: 11px;
+    line-height: 18.5px;
+    color: var(--gray-400);
+    padding-top: 20px;
+  }
+}
+
+.verticalLine {
+  width: 100%;
+  height: 1px;
+  background-color: #eaeaea;
+  margin-top: 20px;
+}
+
+.verticalLine:last-child {
+  margin-top: 40px;
+}
+
+.dateContainer,
+.participantContainer {
+  display: flex;
+  align-items: center;
+  margin: 0 0 10px 10px;
+
+  p {
+    font-weight: 500;
+    font-size: 14px;
+    color: var(--gray-700);
+  }
+
+  div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 122px;
+    height: 34px;
+    border: 1px solid var(--gray-200);
+    border-radius: 5px;
+    font-weight: 500;
+    font-weight: 12px;
+    line-height: 20px;
+    color: var(--gray-600);
+    font-size: 12px;
+  }
+
+  .dateSelect {
+    display: flex;
+    gap: 10px;
+    cursor: pointer;
+
+    &.activeDateSelect {
+      display: flex;
+      justify-content: space-between;
+      padding: 0 10px 0 40px;
+      color: var(--main);
+      border-color: var(--main);
+    }
+  }
+}
+
+.dateContainer {
+  gap: 25px;
+}
+
+.participantContainer {
+  gap: 6px;
+  cursor: pointer;
+
+  span {
+    color: var(--gray-600);
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 20px;
+  }
+}
+
+.participantSection {
+  padding: 16px 25px 0 10px;
+  position: relative;
+
+  h2 {
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 25px;
+    color: var(--black);
+    padding: 15px 0 8px 22px;
+  }
+}
+
+.participantOption {
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  color: var(--gray-700);
+}
+
+.tendencyItem {
+  display: flex;
+  justify-content: center;
+  width: 253px;
+  height: 24px;
+  align-items: center;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 20px;
+  color: var(--gray-700);
+  border: 1px solid var(--gray-200);
+  border-radius: 3px;
+}
+
+.resetContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+
+  p {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 27px;
+  }
+}
+
+.applyContainer {
+  display: flex;
+  justify-content: center;
+  margin: 15px 0;
+  gap: 18px;
+  cursor: pointer;
 }

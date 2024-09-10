@@ -13,12 +13,13 @@ export async function middleware(req: NextRequest) {
   if (!accessToken || !refreshToken || !checkLogin) {
     if (!explore) {
       const res = NextResponse.redirect(new URL('/sign-in', req.url));
-      res.cookies.delete('authToken');
-      res.cookies.delete('refreshToken');
+      res.cookies.delete(token);
+      res.cookies.delete(refresh);
       res.cookies.set('checkLogin', 'false');
       return res;
     }
   }
+
   // AccessToken이 만료가 되었을 때 재갱신
   if (isTokenExpired(accessToken as string)) {
     try {
@@ -60,5 +61,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/', '/studyList/:path*'],
+  matcher: ['/studyList/:path*'],
 };

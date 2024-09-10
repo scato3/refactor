@@ -1,5 +1,4 @@
 import { classnames as cX } from '@/utils/classnames';
-
 import styles from './button.module.scss';
 import { PropsWithChildren } from 'react';
 
@@ -23,6 +22,7 @@ export default function Button({
     <button
       disabled={disabled}
       className={cX(
+        styles.Button_primary,
         styles[size],
         confirm && styles.confirm,
         disabled && styles.disabled,

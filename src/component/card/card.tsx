@@ -30,7 +30,7 @@ export default function Card({ data }: CardProps) {
           {data.additionalInfos?.map((tag: string) => {
             return (
               <span key={tag} className={styles.tagTitle}>
-                #{tag}
+                # {tag}
               </span>
             );
           })}
@@ -40,7 +40,13 @@ export default function Card({ data }: CardProps) {
           <p className={styles.detail}>
             {data.cur_participants_num}/{data.max_participants_num}
           </p>
-          <Image src={IconCalendar} width={24} height={24} alt="달력아이콘" />
+          <Image
+            src={IconCalendar}
+            width={24}
+            height={24}
+            alt="달력아이콘"
+            className={styles.calendarImage}
+          />
           <p className={styles.detail}>
             {formatDate(data.start_date)} - {formatDate(data.end_date)}
           </p>

@@ -4,6 +4,7 @@ import '../styles/global.css';
 import QueryProvider from '@/context/queryProvider';
 
 import localFont from 'next/font/local';
+import Footer from '@/component/common/footer';
 
 const pretendard = localFont({
   src: '../../public/fonts/PretendardVariable.woff2',
@@ -43,6 +44,7 @@ export default function RootLayout({
       <body className={pretendard.className}>
         <QueryProvider>
           <div className="root_container">{children}</div>
+          <Footer />
         </QueryProvider>
         <div id="portal"></div>
       </body>
