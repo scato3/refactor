@@ -132,8 +132,9 @@
 
   div {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
+    padding-left: 12px;
     width: 122px;
     height: 34px;
     border: 1px solid var(--gray-200);
@@ -146,6 +147,7 @@
   }
 
   .dateSelect {
+    position: relative;
     display: flex;
     gap: 10px;
     cursor: pointer;
@@ -157,6 +159,15 @@
       color: var(--main);
       border-color: var(--main);
     }
+
+    .dateImage {
+      right: 12px;
+      position: absolute;
+    }
+  }
+
+  .dateImage {
+    position: absolute;
   }
 }
 

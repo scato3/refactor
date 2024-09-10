@@ -47,9 +47,9 @@ const fieldOption = [
 ];
 
 const tendencyOption = [
-  { key: 0, label: '활발한 대화와 동기부여 원해요' },
-  { key: 1, label: '학습 피드백을 주고받고 싶어요' },
-  { key: 2, label: '조용히 집중하고 싶어요' },
+  { key: 'active', label: '활발한 대화와 동기부여 원해요' },
+  { key: 'feedback', label: '학습 피드백을 주고받고 싶어요' },
+  { key: 'focus', label: '조용히 집중하고 싶어요' },
 ];
 
 export default function FilterModal({ handleCloseModal }: CloseModalProps) {
@@ -75,7 +75,7 @@ export default function FilterModal({ handleCloseModal }: CloseModalProps) {
     width: '0px',
   });
 
-  const [orderType, status, category, duration] = useWatch({
+  const [orderType, status, category, duration, tendency] = useWatch({
     control,
     name: ['orderType', 'status', 'category', 'duration', 'tendency'],
     defaultValue: {
@@ -85,7 +85,7 @@ export default function FilterModal({ handleCloseModal }: CloseModalProps) {
       duration: null,
       minParticipants: null,
       maxParticipants: null,
-      tendency: '',
+      tendency: null,
       orderType: 'recent',
       status: '모집중',
     },
@@ -100,7 +100,31 @@ export default function FilterModal({ handleCloseModal }: CloseModalProps) {
   };
 
   const handleSelectCategory = (value: string) => {
-    setValue('category', value);
+    let updatedCategories = (category || '').split(',').filter(Boolean);
+
+    if (updatedCategories.includes(value)) {
+      updatedCategories = updatedCategories.filter(
+        (category: string) => category !== value
+      );
+    } else {
+      updatedCategories.push(value);
+    }
+
+    setValue('category', updatedCategories.join(','));
+  };
+
+  const handleSelectTendency = (value: string) => {
+    let updatedTendency = (tendency || '').split(',').filter(Boolean);
+
+    if (updatedTendency.includes(value)) {
+      updatedTendency = updatedTendency.filter(
+        (tendency: string) => tendency !== value
+      );
+    } else {
+      updatedTendency.push(value);
+    }
+
+    setValue('tendency', updatedTendency.join(','));
   };
 
   const containerRef = useRef<HTMLDivElement>(null);
@@ -218,7 +242,7 @@ export default function FilterModal({ handleCloseModal }: CloseModalProps) {
           {fieldOption.map((option) => (
             <div
               key={option.label}
-              className={`${category === option.label ? styles.selected : ''} ${styles.optionItem}`}
+              className={`${category?.includes(option.label) ? styles.selected : ''} ${styles.optionItem}`}
               onClick={() => {
                 handleSelectCategory(option.label);
               }}
@@ -236,7 +260,13 @@ export default function FilterModal({ handleCloseModal }: CloseModalProps) {
           <p>시작 일자</p>
           <div className={styles.dateSelect}>
             시작 일자 선택
-            <Image src={IconDate} width={18} height={18} alt="달력" />
+            <Image
+              src={IconDate}
+              width={18}
+              height={18}
+              alt="달력"
+              className={styles.dateImage}
+            />
           </div>
         </div>
         <div className={styles.dateContainer}>
@@ -248,9 +278,10 @@ export default function FilterModal({ handleCloseModal }: CloseModalProps) {
             {duration ? getLabel(duration) : '진행 일자 선택'}
             <Image
               src={duration ? ActiveArrowDown : ArrowDown}
-              width={24}
-              height={24}
+              width={18}
+              height={18}
               alt="달력"
+              className={styles.dateImage}
             />
           </div>
         </div>
@@ -274,15 +305,22 @@ export default function FilterModal({ handleCloseModal }: CloseModalProps) {
         </div>
       </div>
       <div className={styles.verticalLine}></div>
+
       {/* 성향 */}
       <div className={styles.section} ref={tendencySectionRef}>
         <div className={styles.optionHeader}>
           <h2>성향</h2> <span>*중복 선택 가능</span>
         </div>
         <div className={styles.optionContainer}>
-          {tendencyOption.map(({ label }) => (
-            <div key={label} className={styles.tendencyItem}>
-              {label}
+          {tendencyOption.map((option) => (
+            <div
+              key={option.label}
+              className={`${tendency?.includes(option.key) ? styles.selected : ''} ${styles.tendencyItem}`}
+              onClick={() => {
+                handleSelectTendency(option.key);
+              }}
+            >
+              {option.label}
             </div>
           ))}
         </div>

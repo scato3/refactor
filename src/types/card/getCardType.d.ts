@@ -5,7 +5,7 @@ export interface GetCardType {
   duration?: string | null;
   minParticipants?: number | null;
   maxParticipants?: number | null;
-  tendency?: string;
+  tendency?: string | null;
   orderType: string;
   [key: string]: unknown;
 }

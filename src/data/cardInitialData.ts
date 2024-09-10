@@ -7,6 +7,6 @@ export const defaultCardData: GetCardType = {
   duration: null,
   minParticipants: null,
   maxParticipants: null,
-  tendency: '',
+  tendency: null,
   orderType: 'recent',
 };
