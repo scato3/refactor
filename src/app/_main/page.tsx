@@ -20,8 +20,6 @@ export default function Main() {
   const data = { orderType: 'recent' };
   const { data: cardData } = useGetCard('recent', data);
 
-  console.log(cardData);
-
   return (
     <div className={styles.Container}>
       <div className={styles.MainSection}>

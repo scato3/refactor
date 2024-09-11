@@ -1,12 +1,12 @@
 import { GetCardType } from '../types/card/getCardType';
 
 export const defaultCardData: GetCardType = {
-  quickMatch: null,
-  category: null,
-  startDate: null,
-  duration: null,
-  minParticipants: null,
-  maxParticipants: null,
-  tendency: null,
+  quickMatch: '',
+  category: '',
+  startDate: '',
+  duration: '',
+  minParticipants: '',
+  maxParticipants: '',
+  tendency: '',
   orderType: 'recent',
 };

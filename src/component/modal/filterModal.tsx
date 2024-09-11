@@ -13,10 +13,11 @@ import { ActiveArrowDown } from '../../../public/arrow';
 import Calendar from '../common/calendar';
 import dayjs from 'dayjs';
 import { IconWarning } from '../../../public/icons';
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { sortOption } from '@/data/filterData';
-import { useQueryClient } from '@tanstack/react-query';
 import { useGetCard } from '@/apis/card/getCard';
+import { defaultCardData } from '@/data/cardInitialData';
+import { GetCardType } from '@/types/card/getCardType';
 
 const filterOptions = [
   { key: 0, label: '정렬' },
@@ -54,18 +55,16 @@ const tendencyOption = [
 
 export default function FilterModal({ handleCloseModal }: CloseModalProps) {
   const router = useRouter();
-  const { handleSubmit, reset, setValue, control, getValues } =
-    useFormContext();
+  const { handleSubmit, reset, setValue, getValues } =
+    useFormContext<GetCardType>();
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState<boolean>(false);
   const [isCalendarOpen, setIsCalendarOpen] = useState<boolean>(false);
 
   const [firstError, setFirstError] = useState<string>('');
   const [secondError, setSecondError] = useState<string>('');
-  const searchParams = useSearchParams();
-  const queryClient = useQueryClient();
 
-  const tab =
-    searchParams.get('tab') === '전체' ? null : searchParams.get('tab');
+  const currentValues = getValues();
+  const { refetch } = useGetCard('all', currentValues, false);
 
   const handleOpenBottomSheet = () => {
     setIsBottomSheetOpen(true);
@@ -115,12 +114,6 @@ export default function FilterModal({ handleCloseModal }: CloseModalProps) {
       'maxParticipants',
     ],
   });
-
-  useEffect(() => {
-    if (tab) {
-      setValue('category', tab);
-    }
-  }, [tab, setValue]);
 
   // 인원 수에 대한 에러 처리 함수
   const checkError = (isBlur: boolean) => {
@@ -196,21 +189,21 @@ export default function FilterModal({ handleCloseModal }: CloseModalProps) {
     if (filterType === 'tendency' && valueToRemove) {
       // tendency는 개별 항목 제거
       const currentTendency = getValues('tendency'); // 현재 tendency 값 가져오기
-      const updatedTendency = currentTendency
+      const updatedTendency = (currentTendency ?? '')
         .split(',')
         .filter((tendKey: string) => tendKey !== valueToRemove) // 제거할 항목 제외
         .join(',');
 
-      setValue('tendency', updatedTendency || null); // 남은 항목이 없으면 null로 설정
+      setValue('tendency', updatedTendency || ''); // 남은 항목이 없으면 null로 설정
     } else if (
       filterType === 'minParticipants' ||
       filterType === 'maxParticipants'
     ) {
       setFirstError('');
       setSecondError('');
-      setValue(filterType, null);
+      setValue(filterType, '');
     } else {
-      setValue(filterType, null);
+      setValue(filterType, '');
     }
   };
 
@@ -257,13 +250,8 @@ export default function FilterModal({ handleCloseModal }: CloseModalProps) {
     checkError(true);
   };
 
-  const onSubmit = (data: any) => {
-    console.log('필터 데이터:', data);
-
-    queryClient.invalidateQueries({
-      queryKey: ['getCard'],
-      refetchType: 'all',
-    });
+  const onSubmit = () => {
+    refetch();
 
     if (!category || category === '전체') {
       router.replace('/studyList');
@@ -276,7 +264,10 @@ export default function FilterModal({ handleCloseModal }: CloseModalProps) {
 
   // 초기화 함수에서 에러 메시지 초기화
   const handleReset = () => {
-    reset();
+    reset({
+      ...defaultCardData,
+    });
+
     setFirstError('');
     setSecondError('');
   };
@@ -564,12 +555,7 @@ export default function FilterModal({ handleCloseModal }: CloseModalProps) {
           <Image src={IconReset} width={21} height={21} alt="초기화" />
           <p>초기화</p>
         </div>
-        <Button
-          onClick={() => {
-            onSubmit;
-          }}
-          size="medium"
-        >
+        <Button onClick={() => {}} size="medium">
           적용하기
         </Button>
       </div>

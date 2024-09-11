@@ -14,6 +14,7 @@ import { useGetCard } from '@/apis/card/getCard';
 import Card from '@/component/card/card';
 import { CardType } from '@/types/card/cardType';
 import NoStudy from '@/component/common/noStudy';
+import { GetCardType } from '@/types/card/getCardType';
 
 export default function StudyList() {
   const searchParams = useSearchParams();
@@ -21,34 +22,23 @@ export default function StudyList() {
 
   const tab = searchParams.get('tab');
 
-  // 리셋 후에도 tab 값이 남아 있지 않도록 수정
   const initialData = {
     ...defaultCardData,
-    category: tab === '전체' ? null : tab || defaultCardData.category,
+    category: tab === '전체' ? '' : tab || defaultCardData.category,
   };
 
-  const [xx, setXX] = useState<any>(defaultCardData);
-
-  // const methods = useForm({
-  //   defaultValues: initialData,
-  // });
-  const methods = useForm({
+  const methods = useForm<GetCardType>({
     defaultValues: initialData,
   });
 
-  const { data } = useGetCard('all', initialData);
+  const { data } = useGetCard(initialData.orderType, initialData);
 
   useEffect(() => {
-    if (data && data.data) {
-      console.log(data);
-    }
-  }, [data]);
-
-  useEffect(() => {
-    methods.reset({
-      ...defaultCardData,
-      category: tab === '전체' ? null : tab || defaultCardData.category,
-    });
+    setActiveTab(tab === null ? '전체' : tab);
+    methods.setValue(
+      'category',
+      tab === '전체' ? '' : tab || defaultCardData.category
+    );
   }, [tab, methods]);
 
   return (
@@ -62,7 +52,7 @@ export default function StudyList() {
         </div>
         <div className={styles.ItemSection}>
           <div className={styles.CardSection}>
-            {data && data.data.length > 0 ? (
+            {data && data.data?.length > 0 ? (
               data.data.map((data: CardType) => (
                 <Card data={data} key={data.id} />
               ))

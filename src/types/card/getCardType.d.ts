@@ -1,11 +1,11 @@
 export interface GetCardType {
-  quickMatch?: string | null;
-  category?: string | null;
-  startDate?: string | null;
-  duration?: string | null;
-  minParticipants?: number | null;
-  maxParticipants?: number | null;
-  tendency?: string | null;
+  quickMatch?: string;
+  category?: string;
+  startDate?: string;
+  duration?: string;
+  minParticipants?: number | string;
+  maxParticipants?: number | string;
+  tendency?: string;
   orderType: string;
   [key: string]: unknown;
 }
