@@ -2,9 +2,33 @@
   height: 100dvh;
   padding-top: 64px;
   background-color: var(--gray);
+  display: flex;
+  flex-direction: column;
 }
 
 .TopSection {
   background-color: var(--white);
-  height: auto;
+}
+
+.ItemSection {
+  flex-grow: 1;
+  padding: 10px 25px 0 25px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--gray);
+  overflow-y: scroll;
+}
+
+.CardSection {
+  padding-bottom: 74px;
+  overflow-y: scroll;
+  height: 100%;
+}
+
+.NoStudyContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
 }

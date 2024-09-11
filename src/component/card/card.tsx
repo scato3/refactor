@@ -23,11 +23,11 @@ export default function Card({ data }: CardProps) {
     >
       <div className={styles.cardBox}>
         <div className={styles.titleBox}>
-          <p className={styles.flag}>{data.category}</p>
-          <p className={styles.title}>{data.title}</p>
+          <p className={styles.flag}>{data?.category}</p>
+          <p className={styles.title}>{data?.title}</p>
         </div>
         <div className={styles.tagBox}>
-          {data.additionalInfos?.map((tag: string) => {
+          {data?.additionalInfos?.map((tag: string) => {
             return (
               <span key={tag} className={styles.tagTitle}>
                 # {tag}
@@ -38,7 +38,7 @@ export default function Card({ data }: CardProps) {
         <div className={styles.detailBox}>
           <Image src={IconPeople} width={24} height={24} alt="사람아이콘" />
           <p className={styles.detail}>
-            {data.cur_participants_num}/{data.max_participants_num}
+            {data?.cur_participants_num}/{data?.max_participants_num}
           </p>
           <Image
             src={IconCalendar}
@@ -48,7 +48,7 @@ export default function Card({ data }: CardProps) {
             className={styles.calendarImage}
           />
           <p className={styles.detail}>
-            {formatDate(data.start_date)} - {formatDate(data.end_date)}
+            {formatDate(data?.start_date)} - {formatDate(data?.end_date)}
           </p>
         </div>
       </div>

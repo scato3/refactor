@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import styles from './filterModal.module.scss';
 import { CloseModalProps } from '@/types/modalHookType';
-import { IconDate } from '../../../public/icons';
+import { IconDate, IconDateActive, IconX } from '../../../public/icons';
 import Image from 'next/image';
 import { ArrowDown } from '../../../public/arrow';
 import Button from '../common/button';
@@ -10,6 +10,13 @@ import { useFormContext, useWatch } from 'react-hook-form';
 import BottomSheet from '../common/bottomSheet';
 import { durationOption } from '@/data/durationData';
 import { ActiveArrowDown } from '../../../public/arrow';
+import Calendar from '../common/calendar';
+import dayjs from 'dayjs';
+import { IconWarning } from '../../../public/icons';
+import { useSearchParams, useRouter } from 'next/navigation';
+import { sortOption } from '@/data/filterData';
+import { useQueryClient } from '@tanstack/react-query';
+import { useGetCard } from '@/apis/card/getCard';
 
 const filterOptions = [
   { key: 0, label: '정렬' },
@@ -18,13 +25,6 @@ const filterOptions = [
   { key: 3, label: '기간' },
   { key: 4, label: '인원' },
   { key: 5, label: '성향' },
-];
-
-const sortOption = [
-  { key: 'recent', label: '최근 등록순' },
-  { key: 'popular', label: '인기순' },
-  { key: 'deadline', label: '마감임박순' },
-  { key: 'abcd', label: '가나다순' },
 ];
 
 const statusOption = [
@@ -53,15 +53,34 @@ const tendencyOption = [
 ];
 
 export default function FilterModal({ handleCloseModal }: CloseModalProps) {
-  const { handleSubmit, reset, setValue, control } = useFormContext();
-  const [isBottomSheetOpen, setBottomSheetOpen] = useState<boolean>(false);
+  const router = useRouter();
+  const { handleSubmit, reset, setValue, control, getValues } =
+    useFormContext();
+  const [isBottomSheetOpen, setIsBottomSheetOpen] = useState<boolean>(false);
+  const [isCalendarOpen, setIsCalendarOpen] = useState<boolean>(false);
+
+  const [firstError, setFirstError] = useState<string>('');
+  const [secondError, setSecondError] = useState<string>('');
+  const searchParams = useSearchParams();
+  const queryClient = useQueryClient();
+
+  const tab =
+    searchParams.get('tab') === '전체' ? null : searchParams.get('tab');
 
   const handleOpenBottomSheet = () => {
-    setBottomSheetOpen(true);
+    setIsBottomSheetOpen(true);
   };
 
   const handleCloseBottomSheet = () => {
-    setBottomSheetOpen(false);
+    setIsBottomSheetOpen(false);
+  };
+
+  const handleOpenCalendar = () => {
+    setIsCalendarOpen(true);
+  };
+
+  const handleCloseCalendar = () => {
+    setIsCalendarOpen(false);
   };
 
   const getLabel = (key: string) => {
@@ -75,22 +94,67 @@ export default function FilterModal({ handleCloseModal }: CloseModalProps) {
     width: '0px',
   });
 
-  const [orderType, status, category, duration, tendency] = useWatch({
-    control,
-    name: ['orderType', 'status', 'category', 'duration', 'tendency'],
-    defaultValue: {
-      quickMatch: null,
-      category: null,
-      startDate: null,
-      duration: null,
-      minParticipants: null,
-      maxParticipants: null,
-      tendency: null,
-      orderType: 'recent',
-      status: '모집중',
-    },
+  const [
+    orderType,
+    status,
+    category,
+    duration,
+    tendency,
+    startDate,
+    minParticipants,
+    maxParticipants,
+  ] = useWatch({
+    name: [
+      'orderType',
+      'status',
+      'category',
+      'duration',
+      'tendency',
+      'startDate',
+      'minParticipants',
+      'maxParticipants',
+    ],
   });
 
+  useEffect(() => {
+    if (tab) {
+      setValue('category', tab);
+    }
+  }, [tab, setValue]);
+
+  // 인원 수에 대한 에러 처리 함수
+  const checkError = (isBlur: boolean) => {
+    setFirstError('');
+    setSecondError('');
+    let hasError = false;
+
+    if (isBlur && (!minParticipants || !maxParticipants)) {
+      return true;
+    }
+
+    if (!minParticipants && !maxParticipants) {
+      return true;
+    }
+
+    if (
+      minParticipants < 2 ||
+      maxParticipants < 2 ||
+      minParticipants > 20 ||
+      maxParticipants > 20
+    ) {
+      setFirstError('2~20명 이내만 가능해요');
+      hasError = true;
+    }
+
+    if (minParticipants >= maxParticipants) {
+      setSecondError('최소 인원은 최대 인원보다 적어야 해요');
+      hasError = true;
+    }
+
+    return !hasError;
+  };
+
+  // 필터 값 처리하는 함수
   const handleSelectSort = (value: string) => {
     setValue('orderType', value);
   };
@@ -125,6 +189,29 @@ export default function FilterModal({ handleCloseModal }: CloseModalProps) {
     }
 
     setValue('tendency', updatedTendency.join(','));
+  };
+
+  // 필터 삭제
+  const handleRemoveFilter = (filterType: string, valueToRemove?: string) => {
+    if (filterType === 'tendency' && valueToRemove) {
+      // tendency는 개별 항목 제거
+      const currentTendency = getValues('tendency'); // 현재 tendency 값 가져오기
+      const updatedTendency = currentTendency
+        .split(',')
+        .filter((tendKey: string) => tendKey !== valueToRemove) // 제거할 항목 제외
+        .join(',');
+
+      setValue('tendency', updatedTendency || null); // 남은 항목이 없으면 null로 설정
+    } else if (
+      filterType === 'minParticipants' ||
+      filterType === 'maxParticipants'
+    ) {
+      setFirstError('');
+      setSecondError('');
+      setValue(filterType, null);
+    } else {
+      setValue(filterType, null);
+    }
   };
 
   const containerRef = useRef<HTMLDivElement>(null);
@@ -166,9 +253,32 @@ export default function FilterModal({ handleCloseModal }: CloseModalProps) {
     });
   };
 
+  const handleBlur = () => {
+    checkError(true);
+  };
+
   const onSubmit = (data: any) => {
     console.log('필터 데이터:', data);
+
+    queryClient.invalidateQueries({
+      queryKey: ['getCard'],
+      refetchType: 'all',
+    });
+
+    if (!category || category === '전체') {
+      router.replace('/studyList');
+    } else {
+      router.replace(`/studyList?tab=${category}`);
+    }
+
     handleCloseModal();
+  };
+
+  // 초기화 함수에서 에러 메시지 초기화
+  const handleReset = () => {
+    reset();
+    setFirstError('');
+    setSecondError('');
   };
 
   return (
@@ -213,7 +323,6 @@ export default function FilterModal({ handleCloseModal }: CloseModalProps) {
         </div>
       </div>
       <div className={styles.verticalLine}></div>
-
       {/* 상태 */}
       <div className={styles.section} ref={statusSectionRef}>
         <h2>상태</h2>
@@ -232,7 +341,6 @@ export default function FilterModal({ handleCloseModal }: CloseModalProps) {
         </div>
       </div>
       <div className={styles.verticalLine}></div>
-
       {/* 분야 */}
       <div className={styles.section} ref={fieldSectionRef}>
         <div className={styles.optionHeader}>
@@ -256,12 +364,14 @@ export default function FilterModal({ handleCloseModal }: CloseModalProps) {
       {/* 기간 */}
       <div className={styles.section} ref={periodSectionRef}>
         <h2>기간</h2>
-        <div className={styles.dateContainer}>
+        <div className={styles.dateContainer} onClick={handleOpenCalendar}>
           <p>시작 일자</p>
-          <div className={styles.dateSelect}>
-            시작 일자 선택
+          <div
+            className={`${styles.dateSelect} ${startDate ? styles.activeStartSelect : ''}`}
+          >
+            {startDate ? startDate : '시작 일자 선택'}
             <Image
-              src={IconDate}
+              src={startDate ? IconDateActive : IconDate}
               width={18}
               height={18}
               alt="달력"
@@ -290,22 +400,58 @@ export default function FilterModal({ handleCloseModal }: CloseModalProps) {
       {/* 선호 인원 */}
       <div className={styles.section} ref={peopleSectionRef}>
         <div className={styles.optionHeader}>
-          <h2>선호 인원</h2> <span>*본인포함</span>
+          <div className={styles.titleWrapper}>
+            <h2>선호 인원</h2>
+            <span>*본인포함</span>
+          </div>
+
+          {/* 경고 메시지 표시 */}
+          <div className={styles.errorContainer}>
+            {firstError && (
+              <div className={styles.warningContainer}>
+                <Image src={IconWarning} width={18} height={18} alt="경고" />
+                {firstError}
+              </div>
+            )}
+            {secondError && (
+              <div className={styles.warningContainer}>
+                <Image src={IconWarning} width={18} height={18} alt="경고" />
+                {secondError}
+              </div>
+            )}
+          </div>
         </div>
         <div className={styles.participantOption}>
           <div className={styles.participantContainer}>
-            <div>최소 인원수</div>
+            <input
+              type="number"
+              className={`${styles.participant} ${minParticipants ? styles.active : ''}`}
+              placeholder="최소 인원수"
+              value={minParticipants || ''}
+              onChange={(e) =>
+                setValue('minParticipants', Number(e.target.value))
+              }
+              onBlur={handleBlur}
+            />
             <span>명</span>
             <p>~</p>
           </div>
           <div className={styles.participantContainer}>
-            <div>최소 인원수</div>
+            <input
+              type="number"
+              className={`${styles.participant} ${maxParticipants ? styles.active : ''}`}
+              placeholder="최대 인원수"
+              value={maxParticipants || ''}
+              onChange={(e) =>
+                setValue('maxParticipants', Number(e.target.value))
+              }
+              onBlur={handleBlur}
+            />
             <span>명</span>
           </div>
         </div>
       </div>
       <div className={styles.verticalLine}></div>
-
       {/* 성향 */}
       <div className={styles.section} ref={tendencySectionRef}>
         <div className={styles.optionHeader}>
@@ -324,6 +470,87 @@ export default function FilterModal({ handleCloseModal }: CloseModalProps) {
             </div>
           ))}
         </div>
+      </div>{' '}
+      {/* 필터 조건  */}
+      <div className={styles.checkContainer}>
+        {orderType && (
+          <div className={styles.filterTag}>
+            {sortOption.find((option) => option.key === orderType)?.label}
+          </div>
+        )}
+        {category && (
+          <div className={styles.filterTag}>
+            {category}
+            <Image
+              src={IconX}
+              width={20}
+              height={20}
+              alt="X버튼"
+              className={styles.filterImage}
+              onClick={() => {
+                handleRemoveFilter('category');
+              }}
+            />
+          </div>
+        )}
+        {(startDate || duration) && (
+          <div className={styles.filterTag}>
+            {startDate ? dayjs(startDate).format('MM.DD') : ''} -{' '}
+            {durationOption.find((option) => option.key === duration)?.label}
+            <Image
+              src={IconX}
+              width={20}
+              height={20}
+              alt="X버튼"
+              className={styles.filterImage}
+              onClick={() => {
+                handleRemoveFilter('startDate');
+                handleRemoveFilter('duration');
+              }}
+            />
+          </div>
+        )}
+        {minParticipants && maxParticipants && (
+          <div className={styles.filterTag}>
+            <div>
+              {minParticipants} ~ {maxParticipants} 명
+              <Image
+                src={IconX}
+                width={20}
+                height={20}
+                alt="X버튼"
+                className={styles.filterImage}
+                onClick={() => {
+                  handleRemoveFilter('minParticipants');
+                  handleRemoveFilter('maxParticipants');
+                }}
+              />
+            </div>
+          </div>
+        )}
+        {tendency?.split(',').map((tendKey: string) => {
+          const label = tendencyOption.find(
+            (option) => option.key === tendKey
+          )?.label;
+
+          return (
+            label && (
+              <div key={tendKey} className={styles.filterTag}>
+                {label}
+                <Image
+                  src={IconX}
+                  width={20}
+                  height={20}
+                  alt="X버튼"
+                  className={styles.filterImage}
+                  onClick={() => {
+                    handleRemoveFilter('tendency', tendKey);
+                  }}
+                />
+              </div>
+            )
+          );
+        })}
       </div>
       <div className={styles.verticalLine}></div>
       {/* 적용하기 */}
@@ -331,7 +558,7 @@ export default function FilterModal({ handleCloseModal }: CloseModalProps) {
         <div
           className={styles.resetContainer}
           onClick={() => {
-            reset();
+            handleReset();
           }}
         >
           <Image src={IconReset} width={21} height={21} alt="초기화" />
@@ -350,6 +577,7 @@ export default function FilterModal({ handleCloseModal }: CloseModalProps) {
         isOpen={isBottomSheetOpen}
         onClose={handleCloseBottomSheet}
       />
+      <Calendar isOpen={isCalendarOpen} onClose={handleCloseCalendar} />
     </form>
   );
 }

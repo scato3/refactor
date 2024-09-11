@@ -24,21 +24,29 @@ export default function BottomSheet({ isOpen, onClose }: BottomSheetProps) {
   };
 
   return (
-    <div className={`${styles.bottomSheet} ${isOpen ? styles.open : ''}`}>
-      <div className={styles.sheetContent}>
-        {durationOption.map((option) => (
-          <div
-            key={option.key}
-            className={`${styles.sheetItem} ${
-              selectedDuration === option.key ? styles.active : ''
-            }`}
-            onClick={() => {
-              handleSelectDuration(option.key);
-            }}
-          >
-            {option.label}
-          </div>
-        ))}
+    <div
+      className={`${styles.overLay} ${isOpen ? styles.open : styles.closed}`}
+      onClick={onClose}
+    >
+      <div
+        className={`${styles.bottomSheet} ${isOpen ? styles.open : styles.closed}`}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className={styles.sheetContent}>
+          {durationOption.map((option) => (
+            <div
+              key={option.key}
+              className={`${styles.sheetItem} ${
+                selectedDuration === option.key ? styles.active : ''
+              }`}
+              onClick={() => {
+                handleSelectDuration(option.key);
+              }}
+            >
+              {option.label}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

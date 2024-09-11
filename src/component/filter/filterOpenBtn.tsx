@@ -22,6 +22,9 @@ export default function FilterOpenBtn({ property = 'default' }: FilterProps) {
   const [sliderRef] = useKeenSlider({
     breakpoints: {
       '(min-width: 300px)': {
+        slides: { perView: 3, spacing: 10 },
+      },
+      '(min-width: 390px)': {
         slides: { perView: 3.5, spacing: 10 },
       },
     },

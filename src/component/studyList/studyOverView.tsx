@@ -1,21 +1,43 @@
-import { useState } from 'react'; // useState를 불러옵니다.
+import { useState } from 'react';
 import styles from './studyOverView.module.scss';
 import Image from 'next/image';
 import { ArrowDown } from '../../../public/arrow';
+import { useWatch, useFormContext } from 'react-hook-form';
+import { sortOption } from '@/data/filterData';
 
-export default function StudyOverView() {
+interface ViewProps {
+  totalCount: number;
+}
+
+export default function StudyOverView({ totalCount }: ViewProps) {
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
+
+  const { control, setValue } = useFormContext();
 
   const toggleDropdown = () => {
     setIsDropdownOpen((prev) => !prev);
   };
 
+  const orderType = useWatch({
+    control,
+    name: 'orderType',
+  });
+
+  const selectedLabel = sortOption.find(
+    (option) => option.key === orderType
+  )?.label;
+
+  const handleSelectOption = (key: string) => {
+    setValue('orderType', key);
+    setIsDropdownOpen(false);
+  };
+
   return (
     <div className={styles.Container}>
       <div className={styles.Section}>
-        <p>총 100개의 쇼터디를 찾았어요</p>
+        <p>총 {totalCount}개의 쇼터디를 찾았어요</p>
         <div className={styles.filterDropDown} onClick={toggleDropdown}>
-          <p>최신 등록순</p>
+          <p>{selectedLabel}</p>
           <Image
             src={ArrowDown}
             width={12}
@@ -26,10 +48,15 @@ export default function StudyOverView() {
         </div>
         {isDropdownOpen && (
           <ul className={styles.dropdownMenu}>
-            <li>인기순</li>
-            <li className={styles.active}>최근 등록순</li>
-            <li>마감임박순</li>
-            <li>가나다순</li>
+            {sortOption.map((option) => (
+              <li
+                key={option.key}
+                className={orderType === option.key ? styles.active : ''}
+                onClick={() => handleSelectOption(option.key)}
+              >
+                {option.label}
+              </li>
+            ))}
           </ul>
         )}
       </div>

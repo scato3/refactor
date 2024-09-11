@@ -11,11 +11,15 @@ const _fetch = async ({
   query,
   refreshToken,
   url,
+  revalidate,
+  tags,
 }: FetchOptions) => {
   const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
   const baseUrl = `${apiBaseUrl}/${url}`;
-  const apiUrl = query ? `${baseUrl}?${queryString.stringify(query)}` : baseUrl;
+  const apiUrl = query
+    ? `${baseUrl}?${queryString.stringify(query, { skipNull: true, skipEmptyString: true })}`
+    : baseUrl;
 
   const refreshTokenKey = process.env
     .NEXT_PUBLIC_COOKIE_REFRESH_TOKEN_KEY as string;
@@ -28,14 +32,16 @@ const _fetch = async ({
   let headers: HeadersInit = {
     Accept: 'application/json',
     'Content-Type': 'application/json',
-    'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+    'Cache-Control': 'no-cache',
     ...(token && { Authorization: `Bearer ${token}` }),
   };
 
   let requestOptions: RequestInit = {
     method,
     headers,
-    cache: 'no-cache',
+    cache: revalidate ? 'force-cache' : 'no-cache',
+    ...(revalidate ? { next: { revalidate } } : {}),
+    ...(tags ? { next: { tags } } : {}),
     ...(body && typeof body === 'object' ? { body: JSON.stringify(body) } : {}),
   };
 

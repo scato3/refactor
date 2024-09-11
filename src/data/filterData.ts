@@ -48,3 +48,10 @@ export const filterData = [
     name: '기타',
   },
 ];
+
+export const sortOption = [
+  { key: 'recent', label: '최근 등록순' },
+  { key: 'popular', label: '인기순' },
+  { key: 'deadline', label: '마감임박순' },
+  { key: 'abcd', label: '가나다순' },
+];

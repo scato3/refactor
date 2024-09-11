@@ -30,3 +30,28 @@ div {
 button {
   border: none;
 }
+
+input,
+textarea,
+select,
+button {
+  font-family: var(--font-pretendard);
+  outline: none;
+}
+
+/* input, textarea의 기본 스타일 제거 */
+input {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* 숫자 입력 필드에서 스피너 제거 (Webkit 및 Firefox) */
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}

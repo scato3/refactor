@@ -6,3 +6,6 @@ export { default as IconArrow } from './Icon_arrow.svg';
 export { default as IconBolt } from './Icon_Bolt.svg';
 export { default as IconDate } from './Icon_date.svg';
 export { default as IconReset } from './Icon_reset.svg';
+export { default as IconDateActive } from './Icon_date_active.svg';
+export { default as IconX } from './Icon_X.svg';
+export { default as IconWarning } from './Icon_warning.svg';

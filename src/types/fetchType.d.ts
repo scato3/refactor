@@ -4,4 +4,6 @@ export interface FetchOptions {
   url: string;
   query?: Record<string, unknown>;
   refreshToken?: boolean;
+  revalidate?: number;
+  tags?: string[];
 }
