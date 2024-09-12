@@ -100,6 +100,9 @@ export default function ButtonBox() {
                     width={57}
                     height={54}
                     className={styles.iconImage}
+                    onClick={() => {
+                      router.push(`./studyList?tab=${icon.alt}`);
+                    }}
                   />
                   <p className={styles.category}>{icon.alt}</p>
                 </div>

@@ -13,23 +13,23 @@ export default function BottomSheet({ isOpen, onClose }: BottomSheetProps) {
   const selectedDuration = useWatch({
     control,
     name: 'duration',
-    defaultValue: {
-      duration: null,
-    },
   });
 
   const handleSelectDuration = (value: string) => {
     setValue('duration', value);
-    onClose();
+
+    setTimeout(() => {
+      onClose();
+    }, 1000);
   };
 
   return (
     <div
-      className={`${styles.overLay} ${isOpen ? styles.open : styles.closed}`}
+      className={`${styles.overLay} ${isOpen ? styles.open : ''}`}
       onClick={onClose}
     >
       <div
-        className={`${styles.bottomSheet} ${isOpen ? styles.open : styles.closed}`}
+        className={`${styles.bottomSheet} ${isOpen ? styles.open : ''}`}
         onClick={(e) => e.stopPropagation()}
       >
         <div className={styles.sheetContent}>

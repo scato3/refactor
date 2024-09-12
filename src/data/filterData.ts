@@ -55,3 +55,9 @@ export const sortOption = [
   { key: 'deadline', label: '마감임박순' },
   { key: 'abcd', label: '가나다순' },
 ];
+
+export const tendencyOption = [
+  { key: 'active', label: '활발한 대화와 동기부여 원해요' },
+  { key: 'feedback', label: '학습 피드백을 주고받고 싶어요' },
+  { key: 'focus', label: '조용히 집중하고 싶어요' },
+];

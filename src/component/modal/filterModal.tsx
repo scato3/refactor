@@ -14,7 +14,7 @@ import Calendar from '../common/calendar';
 import dayjs from 'dayjs';
 import { IconWarning } from '../../../public/icons';
 import { useRouter } from 'next/navigation';
-import { sortOption } from '@/data/filterData';
+import { sortOption, tendencyOption } from '@/data/filterData';
 import { useGetCard } from '@/apis/card/getCard';
 import { defaultCardData } from '@/data/cardInitialData';
 import { GetCardType } from '@/types/card/getCardType';
@@ -45,12 +45,6 @@ const fieldOption = [
   { key: 8, label: '코딩' },
   { key: 9, label: '모각공' },
   { key: 10, label: '기타' },
-];
-
-const tendencyOption = [
-  { key: 'active', label: '활발한 대화와 동기부여 원해요' },
-  { key: 'feedback', label: '학습 피드백을 주고받고 싶어요' },
-  { key: 'focus', label: '조용히 집중하고 싶어요' },
 ];
 
 export default function FilterModal({ handleCloseModal }: CloseModalProps) {
@@ -266,6 +260,8 @@ export default function FilterModal({ handleCloseModal }: CloseModalProps) {
   const handleReset = () => {
     reset({
       ...defaultCardData,
+      minParticipants: '',
+      maxParticipants: '',
     });
 
     setFirstError('');
@@ -420,7 +416,10 @@ export default function FilterModal({ handleCloseModal }: CloseModalProps) {
               placeholder="최소 인원수"
               value={minParticipants || ''}
               onChange={(e) =>
-                setValue('minParticipants', Number(e.target.value))
+                setValue(
+                  'minParticipants',
+                  e.target.value === '' ? '' : Number(e.target.value)
+                )
               }
               onBlur={handleBlur}
             />
@@ -434,7 +433,10 @@ export default function FilterModal({ handleCloseModal }: CloseModalProps) {
               placeholder="최대 인원수"
               value={maxParticipants || ''}
               onChange={(e) =>
-                setValue('maxParticipants', Number(e.target.value))
+                setValue(
+                  'maxParticipants',
+                  e.target.value === '' ? '' : Number(e.target.value)
+                )
               }
               onBlur={handleBlur}
             />
@@ -501,10 +503,11 @@ export default function FilterModal({ handleCloseModal }: CloseModalProps) {
             />
           </div>
         )}
-        {minParticipants && maxParticipants && (
+        {(minParticipants || maxParticipants) && (
           <div className={styles.filterTag}>
             <div>
-              {minParticipants} ~ {maxParticipants} 명
+              {minParticipants ? minParticipants : ''} -{' '}
+              {maxParticipants ? maxParticipants : ''} 명
               <Image
                 src={IconX}
                 width={20}

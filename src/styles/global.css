@@ -55,3 +55,12 @@ input[type='number']::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
+
+* {
+  outline: none; /* 모든 요소에서 outline 제거 */
+  -webkit-tap-highlight-color: transparent; /* 모바일에서 클릭 하이라이트 제거 */
+  -webkit-user-select: none; /* 텍스트 선택 방지 (Webkit 기반 브라우저) */
+  -moz-user-select: none; /* 텍스트 선택 방지 (Firefox) */
+  -ms-user-select: none; /* 텍스트 선택 방지 (IE/Edge) */
+  user-select: none; /* 텍스트 선택 방지 (표준) */
+}

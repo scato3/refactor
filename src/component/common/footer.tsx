@@ -35,7 +35,7 @@ const icons = [
 export default function Footer() {
   const pathname = usePathname();
 
-  if (pathname === '/sign-in') return null;
+  if (pathname === '/sign-in' || '/fastMatching') return null;
 
   return (
     <div className={styles.Container}>

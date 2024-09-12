@@ -1,7 +1,7 @@
 import { GetCardType } from '../types/card/getCardType';
 
 export const defaultCardData: GetCardType = {
-  quickMatch: '',
+  quickMatch: 'approval',
   category: '',
   startDate: '',
   duration: '',

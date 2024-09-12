@@ -13,6 +13,7 @@
   border-radius: 8px;
   height: 32px;
   min-width: 88px;
+  max-width: 200px;
   cursor: pointer;
 }
 
@@ -26,4 +27,19 @@
 
 .content {
   white-space: nowrap;
+  width: fit-content;
+}
+
+.active {
+  color: var(--main);
+}
+
+.resetContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  background-color: var(--gray-100);
 }

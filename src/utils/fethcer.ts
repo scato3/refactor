@@ -1,9 +1,10 @@
 import queryString from 'query-string';
-
 import { getAppCookie, setAppCookie } from './cookie';
 import { FetchOptions } from '../types/fetchType';
 import { isTokenExpired } from './isTokenExpired';
 import { postRefreshToken } from '../apis/login/oauth';
+
+let isRefreshing = false; // 리프레시 토큰 요청이 진행 중인지 확인하는 변수
 
 const _fetch = async ({
   body,
@@ -25,7 +26,7 @@ const _fetch = async ({
     .NEXT_PUBLIC_COOKIE_REFRESH_TOKEN_KEY as string;
   const accessTokenKey = process.env.NEXT_PUBLIC_COOKIE_TOKEN_KEY as string;
 
-  const token = refreshToken
+  let token = refreshToken
     ? getAppCookie(refreshTokenKey)
     : getAppCookie(accessTokenKey);
 
@@ -47,14 +48,24 @@ const _fetch = async ({
 
   let res = await fetch(apiUrl, requestOptions);
 
-  if (token && isTokenExpired(token as string)) {
+  // 토큰이 만료되었고, 리프레시 토큰 요청 중이 아닐 때만 실행
+  if (token && isTokenExpired(token) && !isRefreshing) {
+    isRefreshing = true; // 리프레시 토큰 요청 진행 시작
+
     try {
       // 401 에러가 발생한 경우, 리프레시 토큰을 사용하여 새 액세스 토큰 발급
       const refreshResult = await postRefreshToken();
 
       // 새로운 액세스 토큰과 리프레시 토큰을 쿠키에 저장
-      setAppCookie(accessTokenKey, refreshResult.accessToken);
-      setAppCookie(refreshTokenKey, refreshResult.refreshToken);
+      if (refreshResult.accessToken && refreshResult.refreshToken) {
+        setAppCookie(accessTokenKey, refreshResult.accessToken);
+        setAppCookie(refreshTokenKey, refreshResult.refreshToken);
+
+        // 새로운 액세스 토큰으로 토큰 업데이트
+        token = refreshResult.accessToken;
+      } else {
+        throw new Error('Invalid token response from refresh');
+      }
 
       headers = {
         ...headers,
@@ -69,6 +80,8 @@ const _fetch = async ({
       res = await fetch(apiUrl, requestOptions);
     } catch (error) {
       throw new Error('Token refresh failed');
+    } finally {
+      isRefreshing = false;
     }
   }
 

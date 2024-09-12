@@ -7,7 +7,7 @@ import FilterOpenBtn from '@/component/filter/filterOpenBtn';
 import StudyOverView from '@/component/studyList/studyOverView';
 import FilterSwiper from '@/component/filter/filterSwiper';
 import { useEffect, useState } from 'react';
-import { useForm, FormProvider } from 'react-hook-form';
+import { useForm, FormProvider, useWatch } from 'react-hook-form';
 import { defaultCardData } from '@/data/cardInitialData';
 import { useSearchParams } from 'next/navigation';
 import { useGetCard } from '@/apis/card/getCard';
@@ -31,7 +31,16 @@ export default function StudyList() {
     defaultValues: initialData,
   });
 
-  const { data } = useGetCard(initialData.orderType, initialData);
+  const [orderType, quickMatch] = useWatch({
+    control: methods.control,
+    name: ['orderType', 'quickMatch'],
+  });
+
+  const { data, refetch } = useGetCard(orderType, {
+    ...initialData,
+    orderType,
+    quickMatch,
+  });
 
   useEffect(() => {
     setActiveTab(tab === null ? '전체' : tab);
@@ -41,6 +50,12 @@ export default function StudyList() {
     );
   }, [tab, methods]);
 
+  useEffect(() => {
+    if (orderType || quickMatch) {
+      refetch();
+    }
+  }, [orderType, quickMatch]);
+
   return (
     <FormProvider {...methods}>
       <div className={styles.Container}>
@@ -48,7 +63,7 @@ export default function StudyList() {
         <div className={styles.TopSection}>
           <FilterSwiper activeTab={activeTab} setActiveTab={setActiveTab} />
           <FilterOpenBtn />
-          <StudyOverView totalCount={data?.totalCount} />
+          <StudyOverView totalCount={data?.totalCount || 0} />
         </div>
         <div className={styles.ItemSection}>
           <div className={styles.CardSection}>

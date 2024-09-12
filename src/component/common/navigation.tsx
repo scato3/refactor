@@ -8,18 +8,18 @@ import { IconArrow } from '../../../public/icons';
 
 interface NavigationProps {
   title: string;
+  onClick?: () => void;
 }
 
-export default function Navigation({ title }: NavigationProps) {
+export default function Navigation({ title, onClick }: NavigationProps) {
   const router = useRouter();
 
   return (
     <div className={styles.Header}>
       <button
         className={styles.BackBtn}
-        onClick={() => {
-          router.push('/');
-        }}
+        //{onClick ? onClick={onClick} : ;p}
+        onClick={() => (onClick ? onClick() : router.back())}
       >
         <Image alt="화살표" height={24} src={IconArrow} width={24} />
       </button>

@@ -32,9 +32,6 @@ export default function Calendar({ isOpen, onClose }: CalendarProps) {
   const startDate = useWatch({
     control,
     name: 'startDate',
-    defaultValue: {
-      startDate: null,
-    },
   });
 
   const goToPreviousMonth = () => {
@@ -48,7 +45,9 @@ export default function Calendar({ isOpen, onClose }: CalendarProps) {
   const handleDateClick = (date: string) => {
     if (dayjs(date).isSameOrAfter(dayjs(), 'day')) {
       setValue('startDate', date);
-      onClose();
+      setTimeout(() => {
+        onClose();
+      }, 1000);
     }
   };
 

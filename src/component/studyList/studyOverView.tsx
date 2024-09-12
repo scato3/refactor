@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { ArrowDown } from '../../../public/arrow';
 import { useWatch, useFormContext } from 'react-hook-form';
 import { sortOption } from '@/data/filterData';
+import { GetCardType } from '@/types/card/getCardType';
 
 interface ViewProps {
   totalCount: number;
@@ -12,7 +13,7 @@ interface ViewProps {
 export default function StudyOverView({ totalCount }: ViewProps) {
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
 
-  const { control, setValue } = useFormContext();
+  const { control, setValue } = useFormContext<GetCardType>();
 
   const toggleDropdown = () => {
     setIsDropdownOpen((prev) => !prev);

@@ -33,14 +33,6 @@ export async function middleware(req: NextRequest) {
           },
         }
       );
-      // res값이 false인 경우 로그인 페이지로 리다이렉트
-      if (!response.ok) {
-        const res = NextResponse.redirect(new URL('/sign-in', req.url));
-        res.cookies.delete(token);
-        res.cookies.delete(refresh);
-        res.cookies.set('checkLogin', 'false');
-        return res;
-      }
       const newTokenData = await response.json();
       console.log(newTokenData);
       const res = NextResponse.next();
@@ -50,11 +42,6 @@ export async function middleware(req: NextRequest) {
       return res;
     } catch (error) {
       console.error('토큰 재갱신 실패', error);
-      const res = NextResponse.redirect(new URL('/sign-in', req.url));
-      res.cookies.delete(token);
-      res.cookies.delete(refresh);
-      res.cookies.set('checkLogin', 'false');
-      return res;
     }
   }
   return NextResponse.next();
