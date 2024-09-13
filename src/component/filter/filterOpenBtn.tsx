@@ -92,7 +92,7 @@ export default function FilterOpenBtn() {
           return (
             <div key={key} className="keen-slider__slide">
               <div
-                className={`${styles.slideBox} ${hasValue ? styles.active : ''}}`}
+                className={`${styles.slideBox} ${hasValue ? styles.active : ''}`}
               >
                 <div
                   className={styles.slideButton}

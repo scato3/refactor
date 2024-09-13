@@ -4,7 +4,7 @@ import { FetchOptions } from '../types/fetchType';
 import { isTokenExpired } from './isTokenExpired';
 import { postRefreshToken } from '../apis/login/oauth';
 
-let isRefreshing = false; // 리프레시 토큰 요청이 진행 중인지 확인하는 변수
+let isRefreshing = false;
 
 const _fetch = async ({
   body,

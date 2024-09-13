@@ -1,7 +1,7 @@
 .sliderContainer {
   position: relative;
   width: 100%;
-  padding: 20px;
+  padding: 5px 20px 20px 20px;
   overflow: hidden;
 }
 
@@ -111,4 +111,20 @@
   font-size: 11px;
   line-height: 18.5px;
   color: #a7a5a4;
+}
+
+.buttonContainer {
+  position: fixed;
+  max-width: 390px;
+  width: 100%;
+  bottom: 45px;
+  margin-left: 50px;
+}
+
+.noStudyContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--gray-777);
+  z-index: 9;
 }

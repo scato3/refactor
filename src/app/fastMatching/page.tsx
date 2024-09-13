@@ -9,19 +9,46 @@ import { QuickMatchInitialData } from '@/data/quickMatchData';
 import useFunnel from '@/hooks/useFunnel';
 import { QuickMatchProps } from '@/types/quick/quickMatchType';
 import { FormProvider, useForm } from 'react-hook-form';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FilterDataType } from '@/types/fastMatching/filterType';
+import { useGetStudyFilter } from '@/apis/fastMatching/filter';
 
 const steps: string[] = ['Step1', 'Step2', 'Step3', 'Last'];
 
 export default function FastMatching() {
+  const { data: filterData } = useGetStudyFilter();
   const [Funnel, Step, setStep] = useFunnel(steps[0]);
 
+  // useForm 초기화
   const methods = useForm<QuickMatchProps>({
     defaultValues: QuickMatchInitialData,
   });
 
+  const { reset } = methods;
+
   const [data, setData] = useState<FilterDataType>();
+
+  useEffect(() => {
+    if (filterData) {
+      const save = !!(
+        filterData.mem_scope?.length ||
+        filterData.tendency?.length ||
+        filterData.category ||
+        filterData.duration
+      );
+
+      const transformedData = {
+        ...QuickMatchInitialData,
+        mem_scope: filterData.mem_scope?.join(', '),
+        tendency: filterData.tendency?.join(', '),
+        category: filterData.category,
+        duration: filterData.duration,
+        save,
+      };
+
+      reset(transformedData);
+    }
+  }, [filterData]);
 
   return (
     <FormProvider {...methods}>

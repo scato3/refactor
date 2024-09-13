@@ -5,7 +5,7 @@ import { IconNothing } from '../../../public/studyList';
 
 interface NoStudyProps {
   children?: PropsWithChildren;
-  type?: 'NoStudy' | 'NoLogin';
+  type?: 'NoStudy' | 'NoLogin' | 'NoSpeed';
 }
 
 export default function NoStudy({ type = 'NoStudy' }: NoStudyProps) {
@@ -22,6 +22,10 @@ export default function NoStudy({ type = 'NoStudy' }: NoStudyProps) {
       setContent('로그인이 필요한 서비스예요.');
       setHeader('조건에 맞는 쇼터디가 없어요');
     }
+    if (type === 'NoSpeed') {
+      setContent('직접 쇼터디를 등록해 보세요!');
+      setHeader('조건에 맞는 쇼터디가 없어요.');
+    }
   }, [type]); // type이 변경될 때만 실행됨
 
   return (
@@ -34,7 +38,13 @@ export default function NoStudy({ type = 'NoStudy' }: NoStudyProps) {
         height={110}
       />
       <p className={styles.contentTop}>{header}</p>
-      <p className={styles.contentBtm}>{content}</p>
+      <p
+        className={`${styles.contentBtm} ${
+          type === 'NoSpeed' ? styles.active : ''
+        }`}
+      >
+        {content}
+      </p>
     </div>
   );
 }

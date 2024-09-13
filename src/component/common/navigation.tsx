@@ -19,7 +19,7 @@ export default function Navigation({ title, onClick }: NavigationProps) {
       <button
         className={styles.BackBtn}
         //{onClick ? onClick={onClick} : ;p}
-        onClick={() => (onClick ? onClick() : router.back())}
+        onClick={() => (onClick ? onClick() : router.push('/'))}
       >
         <Image alt="화살표" height={24} src={IconArrow} width={24} />
       </button>

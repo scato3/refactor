@@ -53,6 +53,7 @@ export default function FilterModal({ handleCloseModal }: CloseModalProps) {
     useFormContext<GetCardType>();
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState<boolean>(false);
   const [isCalendarOpen, setIsCalendarOpen] = useState<boolean>(false);
+  const [isApplyDisabled, setIsApplyDisabled] = useState<boolean>(false);
 
   const [firstError, setFirstError] = useState<string>('');
   const [secondError, setSecondError] = useState<string>('');
@@ -138,6 +139,7 @@ export default function FilterModal({ handleCloseModal }: CloseModalProps) {
       hasError = true;
     }
 
+    setIsApplyDisabled(hasError);
     return !hasError;
   };
 
@@ -558,7 +560,7 @@ export default function FilterModal({ handleCloseModal }: CloseModalProps) {
           <Image src={IconReset} width={21} height={21} alt="초기화" />
           <p>초기화</p>
         </div>
-        <Button onClick={() => {}} size="medium">
+        <Button onClick={() => {}} disabled={isApplyDisabled} size="medium">
           적용하기
         </Button>
       </div>

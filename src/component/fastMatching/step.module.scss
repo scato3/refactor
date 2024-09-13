@@ -91,6 +91,7 @@
   border-bottom: 1px solid var(--black);
   padding: 5px;
   bottom: 10px;
+  cursor: pointer;
 }
 
 .RememberContainer {
@@ -112,4 +113,28 @@
   margin: 4px;
   border: 2px solid var(--gray-600);
   border-radius: 2px;
+}
+
+.resetContainer {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding-right: 30px;
+  cursor: pointer;
+
+  p {
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 16.8px;
+  }
+}
+
+.noStudyContainer {
+  height: calc(100dvh - 65px);
+  margin-top: 65px;
+  background-color: var(--gray-100);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

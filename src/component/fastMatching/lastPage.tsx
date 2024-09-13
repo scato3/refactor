@@ -1,5 +1,4 @@
 import styles from './step.module.scss';
-import Button from '../common/button';
 import Navigation from '../common/navigation';
 import { useRouter } from 'next/navigation';
 import { IconCheck } from '../../../public/icons';
@@ -7,6 +6,9 @@ import Image from 'next/image';
 import { FilterDataType } from '@/types/fastMatching/filterType';
 import { useEffect } from 'react';
 import FilterCard from '../card/filterCard';
+import { IconReset } from '../../../public/icons';
+import NoStudy from '../common/noStudy';
+import Button from '../common/button';
 
 interface ILastPage {
   onBefore: () => void;
@@ -19,6 +21,23 @@ export default function LastPage({ onBefore, data }: ILastPage) {
   useEffect(() => {
     console.log(data);
   }, []);
+
+  if (data?.totalCount === 0)
+    return (
+      <div className={styles.noStudyContainer}>
+        <Navigation title="스피드 매칭" onClick={onBefore} />
+        <NoStudy type="NoSpeed" />
+        <div className={styles.buttonContainer}>
+          <Button
+            onClick={() => {
+              router.push('./');
+            }}
+          >
+            홈으로 돌아가기
+          </Button>
+        </div>
+      </div>
+    );
 
   return (
     <div className={styles.Container}>
@@ -34,10 +53,11 @@ export default function LastPage({ onBefore, data }: ILastPage) {
           옆으로 넘겨 추천 스터디를 확인하고, 원하는 스터디에 바로 입장해볼까요?
         </p>
       </div>
-      <FilterCard data={data} />
-      <div className={styles.buttonContainer}>
-        <Button onClick={() => {}}>이 스터디 가입하기</Button>
+      <div className={styles.resetContainer}>
+        <p>다시 추천받기</p>
+        <Image src={IconReset} width={25} height={15} alt="이미지" />
       </div>
+      <FilterCard data={data} />
       <p
         className={styles.LastTextButton}
         onClick={() => router.push('./studyList')}

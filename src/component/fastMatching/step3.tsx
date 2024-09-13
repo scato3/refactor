@@ -30,6 +30,7 @@ export default function Step3({ onNext, onBefore, setData }: IStep3) {
     const postData = getValues() as QuickFilterType;
     mutate(postData, {
       onSuccess: (res) => {
+        console.log(postData);
         setData(res);
         onNext();
       },
@@ -47,9 +48,9 @@ export default function Step3({ onNext, onBefore, setData }: IStep3) {
     return () => clearTimeout(timer);
   }, []);
 
-  const [mem_scope, tendency] = useWatch({
+  const [mem_scope, tendency, save] = useWatch({
     control,
-    name: ['mem_scope', 'tendency'],
+    name: ['mem_scope', 'tendency', 'save'],
   });
 
   const handleCheckBoxClick = () => {
@@ -75,7 +76,7 @@ export default function Step3({ onNext, onBefore, setData }: IStep3) {
       </div>
       <div className={styles.RememberContainer}>
         <p className={styles.RememberP}>다음에도 이 조건을 기억할게요</p>
-        {isRemember ? (
+        {save ? (
           <Image
             src={IconCheckCheckBox}
             width={32}
