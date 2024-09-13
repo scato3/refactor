@@ -5,3 +5,5 @@ export { default as RightDisabled } from './right_disabled.svg';
 export { default as BtnArrowSm } from './Btn_arrow_sm.svg';
 export { default as ArrowDown } from './Icon_arrow_down.svg';
 export { default as ActiveArrowDown } from './Icon_active_arrow_down.svg';
+export { default as LeftArrow } from './left_arrow.svg';
+export { default as RightArrow } from './right_arrow.svg';

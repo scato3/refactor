@@ -19,10 +19,10 @@ const icons = [
     value: 'search',
   },
   {
-    default: '/footer/Icon_studyRoom.svg',
-    checked: '/footer/Icon_studyRoom_check.svg',
-    alt: 'studyRooms',
-    value: 'myStudy',
+    default: '/footer/Icon_bubble.svg',
+    checked: '/footer/Icon_bubble_check.svg',
+    alt: 'Bubble',
+    value: 'bubble',
   },
   {
     default: '/footer/Icon_profile.svg',
@@ -35,7 +35,8 @@ const icons = [
 export default function Footer() {
   const pathname = usePathname();
 
-  if (pathname === '/sign-in' || '/fastMatching') return null;
+  // 정확한 경로 체크를 위해 수정
+  if (pathname === '/sign-in' || pathname === '/fastMatching') return null;
 
   return (
     <div className={styles.Container}>
@@ -51,7 +52,9 @@ export default function Footer() {
               <Image
                 src={isActive ? icon.checked : icon.default}
                 alt={icon.alt}
-                width={44}
+                width={
+                  icon.value === 'search' || icon.value === 'bubble' ? 32 : 44
+                }
                 height={44}
               />
             </div>

@@ -1,6 +1,6 @@
 import api from '@/utils/fethcer';
 import { useQuery } from '@tanstack/react-query';
-import { getKakaoCodeType } from '@/app/types/login/login';
+import { getKakaoCodeType } from '@/types/login/login';
 
 async function getKakaoCode(data: getKakaoCodeType) {
   return await api.get({ url: 'oauth/kakao', query: data });

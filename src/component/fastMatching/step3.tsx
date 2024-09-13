@@ -9,22 +9,40 @@ import { IconCheckCheckBox } from '../../../public/icons';
 import { useFormContext, useWatch } from 'react-hook-form';
 import TendencyBox from './tendencyBox';
 import MemScopeBox from './memScopeBox';
+import { usePostStudyFilter } from '@/apis/fastMatching/filter';
+import { QuickFilterType } from '@/types/fastMatching/filterType';
+import { FilterDataType } from '@/types/fastMatching/filterType';
 
 interface IStep3 {
   onNext: () => void;
   onBefore: () => void;
+  setData: (data: FilterDataType) => void;
 }
 
-export default function Step3({ onNext, onBefore }: IStep3) {
+export default function Step3({ onNext, onBefore, setData }: IStep3) {
   const [progress, setProgress] = useState<number>(66);
   const { getValues, setValue, control } = useFormContext();
   const [isRemember, setIsRemember] = useState<boolean>(false);
+
+  const { mutate } = usePostStudyFilter();
+
+  const handleNext = () => {
+    const postData = getValues() as QuickFilterType;
+    mutate(postData, {
+      onSuccess: (res) => {
+        setData(res);
+        onNext();
+      },
+      onError: (error) => {
+        alert(error);
+      },
+    });
+  };
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setProgress(100);
     }, 500);
-    console.log(getValues());
 
     return () => clearTimeout(timer);
   }, []);
@@ -70,7 +88,7 @@ export default function Step3({ onNext, onBefore }: IStep3) {
         )}
       </div>
       <div className={styles.buttonContainer}>
-        <Button onClick={onNext} disabled={!mem_scope || !tendency}>
+        <Button onClick={handleNext} disabled={!mem_scope || !tendency}>
           다음
         </Button>
       </div>

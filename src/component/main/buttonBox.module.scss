@@ -6,7 +6,15 @@
 }
 
 .iconItem {
+  width: 57px;
+  height: 54px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   text-align: center;
+  background-color: var(--icon);
+  border-radius: 17px;
 }
 
 .iconImage {
@@ -30,9 +38,11 @@
 }
 
 .category {
+  margin-top: 5px;
   color: var(--gray-700);
   font-size: 13px;
   line-height: 21.84px;
+  text-align: center;
 }
 
 .leftArrow {

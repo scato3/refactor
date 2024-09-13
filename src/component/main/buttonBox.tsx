@@ -71,20 +71,19 @@ export default function ButtonBox() {
           <div>
             <div className={styles.iconRow}>
               {icons.slice(0, 8).map((icon) => (
-                <div
-                  className={styles.iconItem}
-                  key={icon.alt}
-                  onClick={() => {
-                    router.push(`./studyList?tab=${icon.alt}`);
-                  }}
-                >
-                  <Image
-                    src={icon.icon}
-                    alt={icon.alt}
-                    width={57}
-                    height={54}
-                    className={styles.iconImage}
-                  />
+                <div key={icon.alt} className={styles.iconContainer}>
+                  <div
+                    className={styles.iconItem}
+                    onClick={() => {
+                      router.push(`./studyList?tab=${icon.alt}`);
+                    }}
+                  >
+                    <Image
+                      src={icon.icon}
+                      alt={icon.alt}
+                      className={styles.iconImage}
+                    />
+                  </div>
                   <p className={styles.category}>{icon.alt}</p>
                 </div>
               ))}
@@ -93,17 +92,19 @@ export default function ButtonBox() {
           <div>
             <div className={styles.iconRowSecond}>
               {icons.slice(8, 12).map((icon) => (
-                <div className={styles.iconItem} key={icon.alt}>
-                  <Image
-                    src={icon.icon}
-                    alt={icon.alt}
-                    width={57}
-                    height={54}
-                    className={styles.iconImage}
+                <div key={icon.alt} className={styles.iconContainer}>
+                  <div
+                    className={styles.iconItem}
                     onClick={() => {
                       router.push(`./studyList?tab=${icon.alt}`);
                     }}
-                  />
+                  >
+                    <Image
+                      src={icon.icon}
+                      alt={icon.alt}
+                      className={styles.iconImage}
+                    />
+                  </div>
                   <p className={styles.category}>{icon.alt}</p>
                 </div>
               ))}

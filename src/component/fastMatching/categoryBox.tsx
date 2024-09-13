@@ -55,16 +55,23 @@ export default function CategoryBox() {
 
   return (
     <div className={styles.gridContainer}>
-      {icons.map((item) => (
-        <div
-          key={item.alt}
-          className={`${styles.iconBox} ${
-            activeCategory === item.alt ? styles.active : ''
-          }`}
-          onClick={() => handleClick(item.alt)}
-        >
-          <Image src={item.icon} alt={item.alt} width={57} height={54} />
-          <p>{item.alt}</p>
+      {icons.map((icon) => (
+        <div key={icon.alt} className={styles.iconContainer}>
+          <div
+            className={`${styles.iconBox} ${activeCategory === icon.alt ? styles.active : ''}`}
+            onClick={() => handleClick(icon.alt)}
+          >
+            <Image
+              src={icon.icon}
+              alt={icon.alt}
+              className={styles.iconImage}
+            />
+          </div>
+          <p
+            className={`${styles.category} ${activeCategory === icon.alt ? styles.active : ''}`}
+          >
+            {icon.alt}
+          </p>
         </div>
       ))}
     </div>

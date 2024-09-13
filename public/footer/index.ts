@@ -6,3 +6,5 @@ export { default as IconSearchCheck } from './Icon_search_CHECK.svg';
 export { default as IconSearch } from './Icon_search.svg';
 export { default as IconStudyCheck } from './Icon_studyRoom_check.svg';
 export { default as IconStudy } from './Icon_studyRoom.svg';
+export { default as IconBubble } from './Icon_bubble.svg';
+export { default as IconBubbleCheck } from './Icon_bubble_check.svg';

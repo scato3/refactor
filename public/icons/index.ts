@@ -12,3 +12,4 @@ export { default as IconX } from './Icon_X.svg';
 export { default as IconWarning } from './Icon_warning.svg';
 export { default as IconCheckCheckBox } from './Icon_check_checkbox.svg';
 export { default as IconCheckBox } from './Icon_checkbox.svg';
+export { default as IconCheck } from './Icon_check.svg';
