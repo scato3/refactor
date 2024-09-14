@@ -85,11 +85,11 @@ export default function FilterCard({ data }: FilterCardType) {
                 </div>
                 {item.additional_infos?.length > 0 && (
                   <div className={styles.tagBox}>
-                    <span className={styles.tagTitle}>
-                      {item.additional_infos
-                        .map((tag: string) => `#${tag}`)
-                        .join(' ')}
-                    </span>
+                    {item.additional_infos.map((tag: string, index: number) => (
+                      <span key={index} className={styles.tagTitle}>
+                        #{tag}
+                      </span>
+                    ))}
                   </div>
                 )}
                 <div className={styles.peopleContainer}>

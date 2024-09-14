@@ -14,3 +14,4 @@ export { default as IconCheckCheckBox } from './Icon_check_checkbox.svg';
 export { default as IconCheckBox } from './Icon_checkbox.svg';
 export { default as IconCheck } from './Icon_check.svg';
 export { default as IconCaution } from './Icon_caution.svg';
+export { default as IconActveSearch } from './Icon_search.svg';

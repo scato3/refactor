@@ -9,4 +9,5 @@ export const defaultCardData: GetCardType = {
   maxParticipants: '',
   tendency: '',
   orderType: 'recent',
+  search: '',
 };

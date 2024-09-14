@@ -7,5 +7,6 @@ export interface GetCardType {
   maxParticipants?: number | string;
   tendency?: string;
   orderType: string;
+  search?: string;
   [key: string]: unknown;
 }

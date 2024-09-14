@@ -247,6 +247,7 @@ export default function FilterModal({ handleCloseModal }: CloseModalProps) {
   };
 
   const onSubmit = () => {
+    console.log(currentValues);
     refetch();
 
     if (!category || category === '전체') {

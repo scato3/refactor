@@ -75,7 +75,11 @@ export default function ButtonBox() {
                   <div
                     className={styles.iconItem}
                     onClick={() => {
-                      router.push(`./studyList?tab=${icon.alt}`);
+                      {
+                        icon.alt === '탐색하기'
+                          ? router.push('/studyList')
+                          : router.push(`./studyList?tab=${icon.alt}`);
+                      }
                     }}
                   >
                     <Image

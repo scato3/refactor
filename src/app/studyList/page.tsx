@@ -31,17 +31,42 @@ export default function StudyList() {
     defaultValues: initialData,
   });
 
-  const [orderType, quickMatch] = useWatch({
+  // 필터 값들 실시간으로 추적 (useWatch 사용)
+  const [
+    quickMatch,
+    category,
+    startDate,
+    duration,
+    minParticipants,
+    maxParticipants,
+    tendency,
+    orderType,
+  ] = useWatch({
     control: methods.control,
-    name: ['orderType', 'quickMatch'],
+    name: [
+      'quickMatch',
+      'category',
+      'startDate',
+      'duration',
+      'minParticipants',
+      'maxParticipants',
+      'tendency',
+      'orderType',
+    ],
   });
 
   const { data, refetch } = useGetCard(orderType, {
-    ...initialData,
-    orderType,
     quickMatch,
+    category,
+    startDate,
+    duration,
+    minParticipants,
+    maxParticipants,
+    tendency,
+    orderType,
   });
 
+  // tab이 변경되면 category 필드 값을 설정
   useEffect(() => {
     setActiveTab(tab === null ? '전체' : tab);
     methods.setValue(
@@ -50,11 +75,20 @@ export default function StudyList() {
     );
   }, [tab, methods]);
 
+  // 필터 값이 변경될 때마다 재검색 수행
   useEffect(() => {
-    if (orderType || quickMatch) {
-      refetch();
-    }
-  }, [orderType, quickMatch]);
+    refetch();
+  }, [
+    orderType,
+    quickMatch,
+    category,
+    startDate,
+    duration,
+    minParticipants,
+    maxParticipants,
+    tendency,
+    refetch,
+  ]);
 
   return (
     <FormProvider {...methods}>
