@@ -1,7 +1,7 @@
 'use client';
 
 import Navigation from '@/component/common/navigation';
-import styles from './studyList.module.scss';
+import styles from './searchResult.module.scss';
 
 import FilterOpenBtn from '@/component/filter/filterOpenBtn';
 import StudyOverView from '@/component/studyList/studyOverView';
@@ -15,25 +15,25 @@ import Card from '@/component/card/card';
 import { CardType } from '@/types/card/cardType';
 import NoStudy from '@/component/common/noStudy';
 import { GetCardType } from '@/types/card/getCardType';
+import SearchBox from '@/component/search/searchBox';
 
-export default function StudyList() {
+export default function SearchResult() {
   const searchParams = useSearchParams();
   const [activeTab, setActiveTab] = useState<string>('전체');
 
   const tab = searchParams.get('tab');
-  const type = searchParams.get('type');
+  const searchQuery = searchParams.get('search');
 
   const initialData = {
     ...defaultCardData,
     category: tab === '전체' ? '' : tab || defaultCardData.category,
-    quickMatch: type === 'quick' ? 'quick' : 'approval',
+    search: searchQuery || '',
   };
 
   const methods = useForm<GetCardType>({
     defaultValues: initialData,
   });
 
-  // 필터 값들 실시간으로 추적 (useWatch 사용)
   const [
     quickMatch,
     category,
@@ -57,35 +57,18 @@ export default function StudyList() {
     ],
   });
 
-  const getTitle = () => {
-    switch (type) {
-      case 'quick':
-        return '전체';
-      case 'recent':
-        return '신규 쇼터디';
-      case 'deadline':
-        return '마감 임박';
-      case 'all':
-      default:
-        return '전체';
-    }
-  };
+  const { data, refetch } = useGetCard(orderType, {
+    quickMatch,
+    category,
+    startDate,
+    duration,
+    minParticipants,
+    maxParticipants,
+    tendency,
+    orderType,
+    search: searchQuery || '',
+  });
 
-  const { data, refetch } = useGetCard(
-    type === 'quick' ? 'all' : type || 'all',
-    {
-      quickMatch,
-      category,
-      startDate,
-      duration,
-      minParticipants,
-      maxParticipants,
-      tendency,
-      orderType,
-    }
-  );
-
-  // tab이 변경되면 category 필드 값을 설정
   useEffect(() => {
     setActiveTab(tab === null ? '전체' : tab);
     methods.setValue(
@@ -94,7 +77,6 @@ export default function StudyList() {
     );
   }, [tab, methods]);
 
-  // 필터 값이 변경될 때마다 재검색 수행
   useEffect(() => {
     refetch();
   }, [
@@ -112,8 +94,9 @@ export default function StudyList() {
   return (
     <FormProvider {...methods}>
       <div className={styles.Container}>
-        <Navigation title={getTitle()} />
+        <Navigation title="신규 쇼터디" />
         <div className={styles.TopSection}>
+          <SearchBox />
           <FilterSwiper activeTab={activeTab} setActiveTab={setActiveTab} />
           <FilterOpenBtn />
           <StudyOverView totalCount={data?.totalCount || 0} />

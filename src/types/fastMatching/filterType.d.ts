@@ -2,8 +2,8 @@ export interface QuickFilterType {
   save: boolean;
   category: string;
   duration: string;
-  mem_scope: string;
-  tendency: string;
+  mem_scope: number[];
+  tendency: string[];
   [key: string]: unknown;
 }
 

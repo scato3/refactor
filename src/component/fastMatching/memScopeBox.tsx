@@ -9,25 +9,23 @@ export default function MemScopeBox() {
     useWatch({
       control,
       name: 'mem_scope',
-    }) || '';
+    }) || [];
 
-  // 선택된 값들을 배열로 변환
-  const selectedArray = selectedValues
-    ? selectedValues.split(',').map(Number)
+  // 선택된 값들을 배열로 변환 (문자열이 아닌 배열로 직접 처리)
+  const selectedArray: number[] = Array.isArray(selectedValues)
+    ? selectedValues
     : [];
 
   const handleClick = (key: number) => {
     let updatedArray;
 
-    // 이미 선택된 값이면 배열에서 제거, 아니면 추가
     if (selectedArray.includes(key)) {
       updatedArray = selectedArray.filter((item: number) => item !== key);
     } else {
       updatedArray = [...selectedArray, key];
     }
 
-    // 배열을 쉼표로 구분된 문자열로 변환하여 저장
-    setValue('mem_scope', updatedArray.join(','));
+    setValue('mem_scope', updatedArray);
   };
 
   return (

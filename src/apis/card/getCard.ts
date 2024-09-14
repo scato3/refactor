@@ -15,6 +15,5 @@ export const useGetCard = (
     queryKey: ['getCard', data],
     queryFn: () => getCard(type, data),
     enabled,
-    staleTime: 30000,
   });
 };

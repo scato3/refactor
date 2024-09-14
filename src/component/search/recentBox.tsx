@@ -41,7 +41,6 @@ export default function RecentBox({ data }: RecentBoxProps) {
       refetchType: 'all',
     });
 
-    // 삭제된 아이템을 로컬 상태에서 제거
     setItems((prevItems) => prevItems.filter((item) => item.id !== study_id));
   };
 
@@ -51,13 +50,14 @@ export default function RecentBox({ data }: RecentBoxProps) {
       queryKey: ['recentSearch'],
       refetchType: 'all',
     });
+    setItems([]);
   };
 
   return (
     <div className={styles.Container}>
       <div className={styles.header}>
         <h2>최근검색어</h2>
-        <p onClick={() => handleAllDelete()}>지우기</p>
+        <p onClick={handleAllDelete}>지우기</p>
       </div>
 
       <div ref={sliderRef} className={`keen-slider ${styles.tagContainer}`}>

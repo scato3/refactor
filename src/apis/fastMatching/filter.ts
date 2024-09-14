@@ -4,7 +4,7 @@ import { useMutation } from '@tanstack/react-query';
 import { useQuery } from '@tanstack/react-query';
 
 async function postStudyFilter(data: QuickFilterType) {
-  return await api.post({ url: 'study/quick/match', query: data });
+  return await api.post({ url: 'study/quick/match', body: data });
 }
 
 export const usePostStudyFilter = () => {

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useKeenSlider } from 'keen-slider/react';
 import 'keen-slider/keen-slider.min.css';
 import Image from 'next/image';
@@ -14,10 +14,12 @@ import { tendencyOption } from '@/data/filterData';
 import { durationOption } from '@/data/durationData';
 import { filterStatus } from '@/data/filterStatus';
 import { formatDate } from '@/utils/dateformat';
+import { useSearchParams } from 'next/navigation';
 
 export default function FilterOpenBtn() {
   const { openModal, handleCloseModal, handleOpenModal } = useModal();
   const { getValues, setValue } = useFormContext();
+  const searchParams = useSearchParams();
 
   // 퀵매치 상태 관리
   const [isQuickMatchActive, setQuickMatchActive] = useState<boolean>(false);
@@ -32,6 +34,14 @@ export default function FilterOpenBtn() {
       },
     },
   });
+
+  useEffect(() => {
+    const type = searchParams.get('type');
+    if (type === 'quick') {
+      setQuickMatchActive(true);
+      setValue('quickMatch', 'quick');
+    }
+  }, [searchParams, setValue]);
 
   // 퀵매치 상태에 따라 'quick' 또는 'approval' 전달
   const handleQuickMatchClick = () => {

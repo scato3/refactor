@@ -13,7 +13,6 @@ import { ActiveArrowDown } from '../../../public/arrow';
 import Calendar from '../common/calendar';
 import dayjs from 'dayjs';
 import { IconWarning } from '../../../public/icons';
-import { useRouter } from 'next/navigation';
 import { sortOption, tendencyOption } from '@/data/filterData';
 import { useGetCard } from '@/apis/card/getCard';
 import { defaultCardData } from '@/data/cardInitialData';
@@ -48,7 +47,6 @@ const fieldOption = [
 ];
 
 export default function FilterModal({ handleCloseModal }: CloseModalProps) {
-  const router = useRouter();
   const { handleSubmit, reset, setValue, getValues } =
     useFormContext<GetCardType>();
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState<boolean>(false);
@@ -249,12 +247,6 @@ export default function FilterModal({ handleCloseModal }: CloseModalProps) {
   const onSubmit = () => {
     console.log(currentValues);
     refetch();
-
-    if (!category || category === '전체') {
-      router.replace('/studyList');
-    } else {
-      router.replace(`/studyList?tab=${category}`);
-    }
 
     handleCloseModal();
   };

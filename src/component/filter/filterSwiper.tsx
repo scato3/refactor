@@ -24,7 +24,7 @@ export default function FilterSwiper({
         slides: { perView: 4.5, spacing: 10 },
       },
       '(min-width: 390px)': {
-        slides: { perView: 5.5, spacing: 10 },
+        slides: { perView: 5, spacing: 10 },
       },
     },
     slides: { perView: 1 },
@@ -40,32 +40,42 @@ export default function FilterSwiper({
   return (
     <div className={styles.categoryTabBox}>
       <div ref={sliderRef} className="keen-slider">
-        {filterData.map((category, index) => (
-          <div
-            key={category.value}
-            onClick={() => setActiveTab(category.name)}
-            className={`keen-slider__slide ${
-              activeTab === category.name ? styles.activeSlide : ''
-            }`}
-          >
-            <Link
-              href={{ pathname: pathname, query: { tab: category.name } }}
-              key={index}
-              className={
-                activeTab === category.name
-                  ? styles.categoryActive
-                  : styles.category
-              }
+        {filterData.map((category, index) => {
+          const currentSearchQuery = searchParams.get('search');
+
+          return (
+            <div
+              key={category.value}
+              onClick={() => setActiveTab(category.name)}
+              className={`keen-slider__slide ${
+                activeTab === category.name ? styles.activeSlide : ''
+              }`}
             >
-              <div className={styles.nameContainer}>
-                <p>{category.name}</p>
-                {activeTab === category.name && (
-                  <div className={styles.activeLine}></div>
-                )}
-              </div>
-            </Link>
-          </div>
-        ))}
+              <Link
+                href={{
+                  pathname: pathname,
+                  query: {
+                    tab: category.name,
+                    ...(currentSearchQuery && { search: currentSearchQuery }),
+                  },
+                }}
+                key={index}
+                className={
+                  activeTab === category.name
+                    ? styles.categoryActive
+                    : styles.category
+                }
+              >
+                <div className={styles.nameContainer}>
+                  <p>{category.name}</p>
+                  {activeTab === category.name && (
+                    <div className={styles.activeLine}></div>
+                  )}
+                </div>
+              </Link>
+            </div>
+          );
+        })}
       </div>
     </div>
   );

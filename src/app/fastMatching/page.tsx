@@ -39,8 +39,8 @@ export default function FastMatching() {
 
       const transformedData = {
         ...QuickMatchInitialData,
-        mem_scope: filterData.mem_scope?.join(', '),
-        tendency: filterData.tendency?.join(', '),
+        mem_scope: filterData.mem_scope,
+        tendency: filterData.tendency,
         category: filterData.category,
         duration: filterData.duration,
         save,
