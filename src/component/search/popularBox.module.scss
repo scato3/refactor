@@ -12,7 +12,7 @@
 
 .gridContainer {
   display: grid;
-  grid-template-columns: 1fr 1fr; // 2개의 열로 구성
+  grid-template-columns: 1fr 1fr;
   grid-gap: 6px;
   margin-top: 20px;
   font-size: 16px;
@@ -23,6 +23,7 @@
   display: flex;
   align-items: center;
   padding-left: 16px;
+  cursor: pointer;
 
   span {
     font-weight: 500;

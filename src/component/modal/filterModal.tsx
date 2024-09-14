@@ -243,7 +243,6 @@ export default function FilterModal({ handleCloseModal }: CloseModalProps) {
   };
 
   const onSubmit = () => {
-    console.log(currentValues);
     refetch();
 
     handleCloseModal();
@@ -324,7 +323,7 @@ export default function FilterModal({ handleCloseModal }: CloseModalProps) {
       {/* 분야 */}
       <div className={styles.section} ref={fieldSectionRef}>
         <div className={styles.optionHeader}>
-          <h2>분야</h2> <span>*중복 선택 가능</span>
+          <h2>분야</h2>
         </div>
         <div className={styles.optionContainer}>
           {fieldOption.map((option) => (
