@@ -12,6 +12,7 @@ import MemScopeBox from './memScopeBox';
 import { usePostStudyFilter } from '@/apis/fastMatching/filter';
 import { QuickFilterType } from '@/types/fastMatching/filterType';
 import { FilterDataType } from '@/types/fastMatching/filterType';
+import { useAlert } from '@/context/alertProvider';
 
 interface IStep3 {
   onNext: () => void;
@@ -23,6 +24,7 @@ export default function Step3({ onNext, onBefore, setData }: IStep3) {
   const [progress, setProgress] = useState<number>(66);
   const { getValues, setValue, control } = useFormContext();
   const [isRemember, setIsRemember] = useState<boolean>(false);
+  const { showAlert } = useAlert();
 
   const { mutate } = usePostStudyFilter();
 
@@ -35,7 +37,7 @@ export default function Step3({ onNext, onBefore, setData }: IStep3) {
         onNext();
       },
       onError: (error) => {
-        alert(error);
+        showAlert(error.message);
       },
     });
   };

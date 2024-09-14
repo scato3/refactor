@@ -34,7 +34,7 @@ export default function TendencyBox() {
         <div
           key={item.key}
           className={`${styles.optionBox} ${
-            selectedArray.includes(item.key) ? styles.active : ''
+            selectedArray?.includes(item.key) ? styles.active : ''
           }`}
           onClick={() => handleClick(item.key)}
         >

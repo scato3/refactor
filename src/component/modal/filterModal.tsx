@@ -147,21 +147,19 @@ export default function FilterModal({ handleCloseModal }: CloseModalProps) {
   };
 
   const handleSelectStatus = (value: string) => {
-    setValue('status', value);
+    if (getValues('status') === value) {
+      setValue('status', '');
+    } else {
+      setValue('status', value);
+    }
   };
 
   const handleSelectCategory = (value: string) => {
-    let updatedCategories = (category || '').split(',').filter(Boolean);
-
-    if (updatedCategories.includes(value)) {
-      updatedCategories = updatedCategories.filter(
-        (category: string) => category !== value
-      );
+    if (getValues('category') === value) {
+      setValue('category', '');
     } else {
-      updatedCategories.push(value);
+      setValue('category', value);
     }
-
-    setValue('category', updatedCategories.join(','));
   };
 
   const handleSelectTendency = (value: string) => {
